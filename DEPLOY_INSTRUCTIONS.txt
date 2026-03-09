@@ -1,0 +1,35 @@
+# বাস্তু বিশ্লেষক PWA — Deploy কৰাৰ নিৰ্দেশনা
+
+## Netlify ত বিনামূলীয়াকৈ Deploy কৰক (৫ মিনিট)
+
+### Step 1: ফাইলবোৰ এটা ফোল্ডাৰত ৰাখক
+এই ফোল্ডাৰত আছে:
+- index.html
+- manifest.json
+- sw.js
+- icon-192.png
+- icon-512.png
+
+### Step 2: Netlify ত যাওক
+1. https://app.netlify.com খোলক
+2. "Sign up" → Google দিয়ে login কৰক (বিনামূলীয়া)
+
+### Step 3: Deploy কৰক
+1. Login কৰাৰ পিছত "Add new site" → "Deploy manually" ক্লিক কৰক
+2. এই ফোল্ডাৰটো drag & drop কৰক
+3. ৩০ ছেকেণ্ডত হৈ যাব!
+4. আপোনাৰ link পাব: https://your-site-name.netlify.app
+
+### Step 4: মোবাইলত Install কৰক
+**Android (Chrome):**
+1. Chrome ত link খোলক
+2. তলত "Add to Home Screen" বিজ্ঞপ্তি আহিব → "Install" ক্লিক কৰক
+3. নহ'লে: Menu (⋮) → "Add to Home Screen"
+
+**iPhone (Safari):**
+1. Safari ত link খোলক
+2. Share button (□↑) ক্লিক কৰক
+3. "Add to Home Screen" বাছক
+4. "Add" ক্লিক কৰক
+
+## সহায়ৰ বাবে Claude ক সুধিব!

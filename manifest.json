@@ -1,0 +1,14 @@
+{
+  "name": "বাস্তু বিশ্লেষক",
+  "short_name": "বাস্তু",
+  "description": "শাস্ত্ৰ-ভিত্তিক পেছাদাৰী বাস্তু পৰামৰ্শ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0C0800",
+  "theme_color": "#C9A84C",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
