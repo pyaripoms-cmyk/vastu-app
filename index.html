@@ -2,652 +2,487 @@
 <html lang="as">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#C9A84C">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="বাস্তু বিশ্লেষক">
-<meta name="description" content="শাস্ত্ৰ-ভিত্তিক পেছাদাৰী বাস্তু পৰামৰ্শ">
+<meta name="apple-mobile-web-app-title" content="বাস্তু Pro">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Noto+Serif+Devanagari&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<title>বাস্তু বিশ্লেষক</title>
+<title>বাস্তু বিশ্লেষক Pro</title>
 <style>
-:root {
-  --gold: #C9A84C;
-  --dark: #0C0800;
-  --card: #17100A;
-  --border: #C9A84C30;
-  --text: #f5e6c8;
-  --sub: #a07050;
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bot: env(safe-area-inset-bottom, 0px);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; overflow: hidden; }
-body {
-  background: var(--dark);
-  font-family: 'Noto Serif Bengali','Noto Serif Devanagari','Libre Baskerville',Georgia,serif;
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-}
-/* Header */
-.header {
-  background: linear-gradient(180deg,#3d1800,#150800);
-  padding: calc(var(--safe-top) + 12px) 16px 12px;
-  border-bottom: 2px solid var(--gold);
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  flex-shrink: 0;
-}
-.header-left { display: flex; align-items: center; gap: 10px; }
-.header-om { font-size: 28px; }
-.header-title { font-size: 17px; font-weight: bold; color: var(--gold); }
-.header-sub { font-size: 10px; color: #c4a882; font-style: italic; }
-.lang-select {
-  background: #2d1000; color: var(--gold); border: 1px solid var(--gold);
-  border-radius: 8px; padding: 6px 10px; font-family: inherit; font-size: 12px; cursor: pointer;
-}
-/* Tabs */
-.tabs {
-  display: flex; background: #0e0800;
-  border-bottom: 1px solid var(--border); flex-shrink: 0;
-}
-.tab {
-  flex: 1; padding: 12px 4px; background: transparent; color: var(--sub);
-  border: none; border-bottom: 3px solid transparent;
-  cursor: pointer; font-size: 11px; font-family: inherit;
-  font-weight: normal; transition: all 0.25s;
-}
-.tab.active {
-  background: linear-gradient(180deg,#3d1800,#150800);
-  color: var(--gold); border-bottom: 3px solid var(--gold); font-weight: bold;
-}
-/* Scrollable content */
-.content {
-  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  padding: 16px 16px calc(var(--safe-bot) + 16px);
-}
-/* Cards & UI */
-.card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 16px; margin-bottom: 12px;
-}
-.upload-zone {
-  background: var(--card); border: 2px dashed var(--gold);
-  border-radius: 12px; padding: 28px 16px; text-align: center;
-  cursor: pointer; margin-bottom: 16px; transition: all 0.2s;
-}
-.upload-zone:active { transform: scale(0.98); }
-.upload-icon { font-size: 36px; margin-bottom: 8px; }
-.upload-title { color: var(--gold); font-size: 15px; font-weight: bold; margin-bottom: 4px; }
-.upload-sub { color: var(--sub); font-size: 12px; }
-.section-title { color: var(--gold); font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
-.book-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.book-info { display: flex; align-items: center; gap: 10px; }
-.book-icon { font-size: 24px; }
-.book-name { font-size: 13px; font-weight: bold; color: var(--text); }
-.book-size { font-size: 11px; color: var(--sub); }
-.del-btn {
-  background: #2a0a0a; border: 1px solid #FF6B6B44; color: #FF6B6B;
-  padding: 5px 12px; border-radius: 7px; cursor: pointer; font-size: 11px; font-family: inherit;
-}
-.badge { font-size: 11px; padding: 3px 10px; border-radius: 10px; }
-.badge-green { background: #0e2a0e; color: #90EE90; }
-.badge-warn { background: #2a1a00; color: #FFD700; }
-.go-next {
-  background: #0a2200; border: 1px solid #90EE9033; border-radius: 10px;
-  padding: 14px; margin-top: 10px; font-size: 13px; color: #90EE90;
-  text-align: center; cursor: pointer; width: 100%; font-family: inherit;
-}
-/* Form */
-.form-label { display: block; font-size: 11px; color: var(--sub); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.8px; }
-.form-input, .form-select, .form-textarea {
-  width: 100%; background: #0e0900; border: 1px solid var(--border);
-  border-radius: 8px; padding: 11px 14px; color: var(--text);
-  font-size: 14px; font-family: inherit; outline: none; margin-bottom: 14px;
-}
-.form-select { appearance: none; -webkit-appearance: none; }
-.form-textarea { resize: vertical; min-height: 80px; }
-.analyze-btn {
-  width: 100%; border: none; border-radius: 10px; padding: 16px;
-  font-size: 15px; font-weight: bold; cursor: pointer; font-family: inherit;
-  transition: all 0.3s;
-}
-.analyze-btn.ready {
-  background: linear-gradient(135deg,#7a3a0a,#C9A84C);
-  color: #1a0800; box-shadow: 0 4px 24px #C9A84C44;
-}
-.analyze-btn.loading {
-  background: var(--card); border: 1px solid var(--border); color: var(--sub); cursor: not-allowed;
-}
-.error-box { background: #2a0a0a; border: 1px solid #FF6B6B33; border-radius: 8px; padding: 12px; color: #FF6B6B; font-size: 13px; margin-bottom: 12px; }
-.no-book-hint { background: #2a1a00; border: 1px solid var(--gold); border-radius: 8px; padding: 12px; font-size: 12px; color: #c4a882; text-align: center; margin-top: 10px; }
-/* Report */
-.report-cover {
-  background: linear-gradient(135deg,#3d1800,#150800);
-  border: 1px solid var(--gold); border-radius: 14px;
-  padding: 24px 16px; text-align: center; margin-bottom: 14px;
-}
-.score-ring {
-  display: inline-block; border-radius: 50%; padding: 3px; margin-bottom: 6px;
-}
-.score-inner {
-  width: 72px; height: 72px; background: #150800; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: bold; color: var(--gold);
-}
-.shloka-box {
-  background: #1e1000; border-left: 4px solid var(--gold);
-  border-radius: 0 8px 8px 0; padding: 14px; margin: 12px 0;
-}
-.shloka-text { font-size: 13px; color: #e8c98a; font-style: italic; line-height: 1.9; margin-bottom: 6px; }
-.shloka-tr { font-size: 11px; color: var(--sub); font-style: italic; margin-bottom: 5px; }
-.shloka-meaning { font-size: 12px; color: #c4a882; margin-bottom: 6px; }
-.shloka-src { font-size: 10px; color: var(--gold); background: #2d1500; padding: 2px 8px; border-radius: 8px; display: inline-block; }
-.remedy-item { display: flex; gap: 8px; font-size: 12px; color: #d4c4a8; padding: 5px 0; border-bottom: 1px dashed var(--border); }
-.remedy-item:last-child { border: none; }
-/* Share buttons */
-.share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.share-btn {
-  padding: 13px 8px; border: none; border-radius: 10px; font-size: 12px;
-  font-weight: bold; cursor: pointer; font-family: inherit; text-align: center;
-  transition: all 0.2s;
-}
-.share-btn:active { transform: scale(0.97); }
-/* Toast */
-.toast {
-  position: fixed; bottom: calc(var(--safe-bot) + 80px); left: 50%; transform: translateX(-50%);
-  background: #1a3a0a; color: #90EE90; padding: 10px 20px; border-radius: 20px;
-  font-size: 13px; border: 1px solid #90EE9044; opacity: 0; transition: opacity 0.3s;
-  z-index: 999; white-space: nowrap;
-}
-.toast.show { opacity: 1; }
-/* No report */
-.empty-state { text-align: center; padding: 60px 20px; color: var(--sub); }
-.empty-icon { font-size: 48px; margin-bottom: 14px; }
-/* Install banner */
-.install-banner {
-  background: linear-gradient(135deg,#1a3300,#0a1a00);
-  border: 1px solid #90EE9044; border-radius: 10px; padding: 14px 16px;
-  margin-bottom: 14px; display: flex; align-items: center; gap: 12px;
-}
-.install-btn {
-  background: #90EE90; color: #0a1a00; border: none; border-radius: 8px;
-  padding: 8px 14px; font-size: 12px; font-weight: bold; cursor: pointer;
-  font-family: inherit; white-space: nowrap; flex-shrink: 0;
-}
+:root{--g:#C9A84C;--dk:#0C0800;--cd:#17100A;--b:#C9A84C28;--tx:#f5e6c8;--sb:#a07050;--re:#e74c3c;--gr:#27ae60;--wn:#e67e22;--st:env(safe-area-inset-top,0px);--sb2:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{background:var(--dk);font-family:'Noto Serif Bengali','Noto Serif Devanagari','Libre Baskerville',Georgia,serif;color:var(--tx);display:flex;flex-direction:column}
+#hdr{background:linear-gradient(180deg,#3d1800,#150800);padding:calc(var(--st) + 10px) 14px 10px;border-bottom:2px solid var(--g);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0}
+.hl{display:flex;align-items:center;gap:10px}
+.ho{font-size:26px}
+.ht{font-size:16px;font-weight:bold;color:var(--g)}
+.hs{font-size:9px;color:#c4a882;font-style:italic}
+.ls{background:#2d1000;color:var(--g);border:1px solid var(--g);border-radius:7px;padding:5px 8px;font-family:inherit;font-size:11px;cursor:pointer}
+#tabs{display:flex;background:#0e0800;border-bottom:1px solid var(--b);flex-shrink:0;overflow-x:auto}
+.tb{flex:1;min-width:55px;padding:10px 3px;background:transparent;color:var(--sb);border:none;border-bottom:3px solid transparent;cursor:pointer;font-size:10px;font-family:inherit;white-space:nowrap;transition:all .25s}
+.tb.act{background:linear-gradient(180deg,#3d1800,#150800);color:var(--g);border-bottom:3px solid var(--g);font-weight:bold}
+#main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px calc(var(--sb2) + 14px)}
+.card{background:var(--cd);border:1px solid var(--b);border-radius:11px;padding:14px;margin-bottom:11px}
+.sh{color:var(--g);font-size:13px;font-weight:bold;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.lbl{display:block;font-size:10px;color:var(--sb);margin-bottom:5px;text-transform:uppercase;letter-spacing:.7px}
+.inp,.sl,.ta{width:100%;background:#0e0900;border:1px solid var(--b);border-radius:8px;padding:10px 12px;color:var(--tx);font-size:13px;font-family:inherit;outline:none;margin-bottom:12px}
+.ta{resize:vertical;min-height:68px}
+.btn{width:100%;border:none;border-radius:9px;padding:14px;font-size:14px;font-weight:bold;cursor:pointer;font-family:inherit;transition:all .3s}
+.btn-p{background:linear-gradient(135deg,#7a3a0a,var(--g));color:#1a0800;box-shadow:0 4px 20px #C9A84C44}
+.btn-p:disabled{background:var(--cd);border:1px solid var(--b);color:var(--sb);cursor:not-allowed;box-shadow:none}
+.bdg{font-size:10px;padding:2px 8px;border-radius:8px;display:inline-block}
+.bg{background:#0e2a0e;color:#90EE90}
+.br{background:#2a0a0a;color:#FF6B6B}
+.bw{background:#2a1a00;color:#FFD700}
+.err{background:#2a0a0a;border:1px solid #FF6B6B33;border-radius:8px;padding:11px;color:#FF6B6B;font-size:12px;margin-bottom:11px}
+/* Inner tabs */
+.itabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.itb{padding:7px 11px;border-radius:18px;border:1px solid var(--b);background:transparent;color:var(--sb);font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.itb.act{background:var(--g)22;color:var(--g);border-color:var(--g)55}
+/* Book toggle */
+.btog{width:38px;height:22px;border-radius:11px;border:none;cursor:pointer;flex-shrink:0;position:relative;transition:background .3s}
+.bdot{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:2px;transition:left .3s}
+/* Grid */
+.gwrap{overflow-x:auto;padding-bottom:4px}
+.vgrid{display:inline-grid;gap:1px;background:var(--g)22;border:1px solid var(--g)33;border-radius:4px}
+.gc{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:7px;cursor:pointer;border-radius:2px;background:#1a1000;color:var(--sb);text-align:center;line-height:1.2;transition:all .2s;overflow:hidden}
+.gc.sel{background:var(--g)33;color:var(--g);font-weight:bold}
+.gc.bra{background:#3d2500;color:var(--g)}
+.gc:active{transform:scale(.9)}
+/* Dosha cards */
+.dc{border-radius:10px;padding:13px;margin-bottom:10px;border-left:4px solid}
+.dcr{background:#1a0808;border-color:var(--re)}
+.dcw{background:#1a1000;border-color:var(--wn)}
+.dcg{background:#081408;border-color:var(--gr)}
+.shbox{background:#1e1000;border-left:3px solid var(--g);border-radius:0 7px 7px 0;padding:11px;margin:9px 0}
+.shs{font-size:12px;color:#e8c98a;font-style:italic;line-height:1.9;margin-bottom:4px}
+.shm{font-size:11px;color:#c4a882;margin-bottom:5px}
+.shsr{font-size:9px;color:var(--g);background:#2d1500;padding:2px 7px;border-radius:7px;display:inline-block}
+.cbox{background:#1a0a20;border:1px solid #9B59B633;border-radius:7px;padding:9px;margin:7px 0;font-size:11px;color:#c4a0ff}
+/* Share */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sbtn{padding:12px 6px;border:none;border-radius:9px;font-size:11px;font-weight:bold;cursor:pointer;font-family:inherit}
+.sbtn:active{transform:scale(.97)}
+/* Install */
+.iban{background:linear-gradient(135deg,#1a3300,#0a1a00);border:1px solid #90EE9044;border-radius:10px;padding:11px 13px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.ibtn{background:#90EE90;color:#0a1a00;border:none;border-radius:7px;padding:6px 11px;font-size:11px;font-weight:bold;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
+/* score ring */
+.sr{display:inline-block;border-radius:50%;padding:3px}
+.si{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;color:var(--g)}
 </style>
 </head>
 <body>
-
-<!-- Header -->
-<div class="header">
-  <div class="header-left">
-    <span class="header-om">🕉️</span>
-    <div>
-      <div class="header-title" id="hTitle">বাস্তু বিশ্লেষক</div>
-      <div class="header-sub" id="hSub">শাস্ত্ৰ-ভিত্তিক পেছাদাৰী পৰামৰ্শ</div>
-    </div>
+<div id="hdr">
+  <div class="hl"><span class="ho">🕉️</span>
+    <div><div class="ht" id="hT">বাস্তু বিশ্লেষক Pro</div>
+    <div class="hs" id="hS">শাস্ত্ৰ-ভিত্তিক পেছাদাৰী পৰামৰ্শ</div></div>
   </div>
-  <select class="lang-select" id="langSel" onchange="setLang(this.value)">
+  <select class="ls" id="lsel" onchange="setL(this.value)">
     <option value="as">অসমীয়া</option>
     <option value="en">English</option>
     <option value="hi">हिंदी</option>
   </select>
 </div>
-
-<!-- Tabs -->
-<div class="tabs">
-  <button class="tab active" id="tab0" onclick="showTab(0)">📚 <span id="tl0">গ্ৰন্থ</span></button>
-  <button class="tab" id="tab1" onclick="showTab(1)">🏠 <span id="tl1">বিশ্লেষণ</span></button>
-  <button class="tab" id="tab2" onclick="showTab(2)">📋 <span id="tl2">ৰিপোৰ্ট</span></button>
-</div>
-
-<!-- Content -->
-<div class="content" id="main"></div>
-
-<!-- Toast -->
-<div class="toast" id="toast"></div>
+<div id="tabs"></div>
+<div id="main"></div>
 
 <script>
-// ── Language Data ──
-const LANG = {
-  as: {
-    title:"বাস্তু বিশ্লেষক", sub:"শাস্ত্ৰ-ভিত্তিক পেছাদাৰী পৰামৰ্শ",
-    tabs:["গ্ৰন্থ","বিশ্লেষণ","ৰিপোৰ্ট"],
-    addBook:"কিতাপ যোগ কৰক (PDF)", addBookSub:"PDF ফাইল বাছক • একাধিক কিতাপ যোগ কৰিব পাৰে",
-    bookLib:"গ্ৰন্থভাণ্ডাৰ", noBooks:"এতিয়ালৈকে কোনো কিতাপ যোগ কৰা হোৱা নাই।",
-    booksReady:"খন কিতাপ প্ৰস্তুত", goAnalyze:"▶ বিশ্লেষণ টেবলৈ যাওক →",
-    houseTitle:"গৃহৰ বিৱৰণ", clientName:"ক্লায়েণ্টৰ নাম", clientPh:"যেনে: ৰাম কুমাৰ শৰ্মা",
-    address:"গৃহৰ ঠিকনা", addressPh:"যেনে: গুৱাহাটী, অসম",
-    facing:"মূল দ্বাৰৰ দিশ", selectDir:"দিশ বাছক...",
-    plotShape:"প্লটৰ আকৃতি", selectShape:"আকৃতি বাছক...",
-    rooms:"কোঠাৰ বিৱৰণ", roomsPh:"যেনে: উত্তৰত বেডৰুম, দক্ষিণ-পূবত ৰান্ধনী ঘৰ...",
-    floorPlan:"ঘৰৰ নক্সা (ছবি, ঐচ্ছিক)", uploadFloor:"📸 নক্সাৰ ছবি আপলোড কৰক",
-    analyze:"🔍 বাস্তু বিশ্লেষণ কৰক", analyzing:"⏳ বিশ্লেষণ হৈ আছে...",
-    noBookWarn:"⚠️ কমেও এখন কিতাপ যোগ কৰক।", fillWarn:"⚠️ নাম আৰু দিশ পূৰণ কৰক।",
-    noBookHint:"📚 প্ৰথমে গ্ৰন্থ টেবত কিতাপ যোগ কৰক",
-    errAnalysis:"❌ বিশ্লেষণত সমস্যা হৈছে। পুনৰ চেষ্টা কৰক।",
-    del:"মচক", shareReport:"ৰিপোৰ্ট শ্বেয়াৰ কৰক",
-    dlPDF:"📥 PDF ডাউনলোড", whatsapp:"💬 WhatsApp",
-    emailBtn:"📧 Email", printBtn:"🖨️ প্ৰিন্ট",
-    overallScore:"সামগ্ৰিক বাস্তু স্কোৰ", summary:"সাৰাংশ",
-    remedies:"প্ৰতিকাৰ", topRemedies:"মুখ্য প্ৰতিকাৰ", sources:"ব্যৱহৃত গ্ৰন্থ",
-    noReport:"এতিয়ালৈকে কোনো ৰিপোৰ্ট নাই।", analyzeFirst:"গৃহ বিশ্লেষণ কৰক।",
-    good:"শুভ", warn:"সতৰ্ক", bad:"অশুভ",
-    clientLbl:"ক্লায়েণ্ট", dateLbl:"তাৰিখ", facingLbl:"মূল দ্বাৰ", addrLbl:"ঠিকনা",
-    reportTitle:"বাস্তু বিশ্লেষণ ৰিপোৰ্ট", consultTitle:"শাস্ত্ৰ-ভিত্তিক পেছাদাৰী পৰামৰ্শ",
-    waMsg:"নমস্কাৰ! আপোনাৰ বাস্তু বিশ্লেষণ ৰিপোৰ্ট প্ৰস্তুত।",
-    dirs:["পূৱ","পশ্চিম","উত্তৰ","দক্ষিণ","উত্তৰ-পূব","উত্তৰ-পশ্চিম","দক্ষিণ-পূব","দক্ষিণ-পশ্চিম"],
-    shapes:["বৰ্গ","আয়তক্ষেত্ৰ","L-আকৃতি","অনিয়মিত"],
-    installMsg:"📱 এই App ফোনত Install কৰক", installBtn:"Install",
-    copied:"লিংক কপি হ'ল!",
-  },
-  en: {
-    title:"Vastu Analyzer", sub:"Shastra-Based Professional Consultation",
-    tabs:["Books","Analysis","Report"],
-    addBook:"Add Book (PDF)", addBookSub:"Select PDF files • Multiple books allowed",
-    bookLib:"Book Library", noBooks:"No books added yet.",
-    booksReady:" book(s) ready", goAnalyze:"▶ Go to Analysis →",
-    houseTitle:"House Details", clientName:"Client Name", clientPh:"e.g. Ram Kumar Sharma",
-    address:"Property Address", addressPh:"e.g. Guwahati, Assam",
-    facing:"Main Door Direction", selectDir:"Select direction...",
-    plotShape:"Plot Shape", selectShape:"Select shape...",
-    rooms:"Room Layout", roomsPh:"e.g. Bedroom in North, Kitchen in SE...",
-    floorPlan:"Floor Plan (Image, Optional)", uploadFloor:"📸 Upload floor plan image",
-    analyze:"🔍 Analyze Vastu", analyzing:"⏳ Analyzing...",
-    noBookWarn:"⚠️ Add at least one book first.", fillWarn:"⚠️ Please fill name and direction.",
-    noBookHint:"📚 Add books in the Books tab first",
-    errAnalysis:"❌ Analysis failed. Please try again.",
-    del:"Delete", shareReport:"Share Report",
-    dlPDF:"📥 Download PDF", whatsapp:"💬 WhatsApp",
-    emailBtn:"📧 Email", printBtn:"🖨️ Print",
-    overallScore:"Overall Vastu Score", summary:"Executive Summary",
-    remedies:"Remedies", topRemedies:"Top Priority Remedies", sources:"Sources Used",
-    noReport:"No report yet.", analyzeFirst:"Analyze a house first.",
-    good:"Good", warn:"Warning", bad:"Bad",
-    clientLbl:"Client", dateLbl:"Date", facingLbl:"Facing", addrLbl:"Address",
-    reportTitle:"Vastu Analysis Report", consultTitle:"Shastra-Based Professional Consultation",
-    waMsg:"Hello! Your Vastu Analysis Report is ready.",
-    dirs:["East","West","North","South","North-East","North-West","South-East","South-West"],
-    shapes:["Square","Rectangle","L-Shape","Irregular"],
-    installMsg:"📱 Install this App on your phone", installBtn:"Install",
-    copied:"Link copied!",
-  },
-  hi: {
-    title:"वास्तु विश्लेषक", sub:"शास्त्र-आधारित पेशेवर परामर्श",
-    tabs:["ग्रंथ","विश्लेषण","रिपोर्ट"],
-    addBook:"पुस्तक जोड़ें (PDF)", addBookSub:"PDF फ़ाइल चुनें • एकाधिक पुस्तकें जोड़ें",
-    bookLib:"ग्रंथागार", noBooks:"अभी तक कोई पुस्तक नहीं जोड़ी।",
-    booksReady:" पुस्तक तैयार", goAnalyze:"▶ विश्लेषण टैब पर जाएं →",
-    houseTitle:"घर का विवरण", clientName:"ग्राहक का नाम", clientPh:"जैसे: राम कुमार शर्मा",
-    address:"संपत्ति का पता", addressPh:"जैसे: गुवाहाटी, असम",
-    facing:"मुख्य द्वार की दिशा", selectDir:"दिशा चुनें...",
-    plotShape:"भूखंड का आकार", selectShape:"आकार चुनें...",
-    rooms:"कमरों का विवरण", roomsPh:"जैसे: उत्तर में बेडरूम, दक्षिण-पूर्व में रसोई...",
-    floorPlan:"फ्लोर प्लान (छवि, वैकल्पिक)", uploadFloor:"📸 नक्शे की छवि अपलोड करें",
-    analyze:"🔍 वास्तु विश्लेषण करें", analyzing:"⏳ विश्लेषण हो रहा है...",
-    noBookWarn:"⚠️ कम से कम एक पुस्तक जोड़ें।", fillWarn:"⚠️ नाम और दिशा भरें।",
-    noBookHint:"📚 पहले ग्रंथ टैब में पुस्तक जोड़ें",
-    errAnalysis:"❌ विश्लेषण में समस्या। पुनः प्रयास करें।",
-    del:"हटाएं", shareReport:"रिपोर्ट साझा करें",
-    dlPDF:"📥 PDF डाउनलोड", whatsapp:"💬 WhatsApp",
-    emailBtn:"📧 Email", printBtn:"🖨️ प्रिंट",
-    overallScore:"समग्र वास्तु स्कोर", summary:"सारांश",
-    remedies:"उपाय", topRemedies:"मुख्य उपाय", sources:"उपयोग किए गए ग्रंथ",
-    noReport:"अभी कोई रिपोर्ट नहीं।", analyzeFirst:"पहले घर का विश्लेषण करें।",
-    good:"शुभ", warn:"सावधान", bad:"अशुभ",
-    clientLbl:"ग्राहक", dateLbl:"तारीख", facingLbl:"मुख्य द्वार", addrLbl:"पता",
-    reportTitle:"वास्तु विश्लेषण रिपोर्ट", consultTitle:"शास्त्र-आधारित पेशेवर परामर्श",
-    waMsg:"नमस्ते! आपकी वास्तु विश्लेषण रिपोर्ट तैयार है।",
-    dirs:["पूर्व","पश्चिम","उत्तर","दक्षिण","उत्तर-पूर्व","उत्तर-पश्चिम","दक्षिण-पूर्व","दक्षिण-पश्चिम"],
-    shapes:["वर्ग","आयत","L-आकार","अनियमित"],
-    installMsg:"📱 इस App को फ़ोन पर Install करें", installBtn:"Install",
-    copied:"लिंक कॉपी हो गया!",
-  }
+const T={
+as:{n:"বাস্তু বিশ্লেষক Pro",s:"শাস্ত্ৰ-ভিত্তিক পেছাদাৰী পৰামৰ্শ",
+tabs:["📚 গ্ৰন্থ","📐 বিশ্লেষণ","🔯 মণ্ডল","🔍 দোষ","📋 ৰিপোৰ্ট"],
+aB:"কিতাপ যোগ কৰক (PDF)",aBs:"PDF আপলোড কৰক • Priority অনুযায়ী সজোৱা",
+bL:"গ্ৰন্থভাণ্ডাৰ",nB:"কোনো কিতাপ নাই।",aI:"টা সক্ৰিয়",dl:"মচক",
+pHint:"↑↓ Priority সলনি কৰক",cRule:"মতভেদ হলে: বেছি প্ৰাচীন গ্ৰন্থ অগ্ৰাধিকাৰ পাব",
+aTs:["📍 Plot","🏠 Building","💧 পৰিবেশ"],
+pTi:"Plot বিশ্লেষণ",pSh:"Plot আকৃতি",pSl:"Plot ঢাল",rD:"ৰাস্তাৰ দিশ",wS:"পানীৰ উৎস",sur:"আশে-পাশে",pSz:"Plot আকাৰ (ft)",
+bTi:"Building Layout",mE:"মূল প্ৰৱেশদ্বাৰ *",ki:"ৰন্ধনঘৰ",be:"শোৱাকোঠা",mb:"মুখ্য শোৱাকোঠা",to:"শৌচাগাৰ",st:"চিৰি",br:"ব্ৰহ্মস্থান",po:"পূজাকোঠা",ha:"হল",
+eTi:"পৰিবেশ বিশ্লেষণ",nT:"মন্দিৰ আছে নে?",nW:"পানীৰ উৎস?",nC:"শ্মশান/কবৰস্থান?",nH:"চিকিৎসালয়?",tP:"Plot ত ডাঙৰ গছ?",tD:"গছৰ দিশ",ai:"অতিৰিক্ত তথ্য",
+cN:"ক্লায়েণ্টৰ নাম",ad:"গৃহৰ ঠিকনা",
+an:"🔍 সম্পূৰ্ণ বাস্তু বিশ্লেষণ",ang:"⏳ বিশ্লেষণ হৈ আছে...",
+nbW:"⚠️ কমেও এখন কিতাপ যোগ কৰক।",fW:"⚠️ নাম আৰু মূল প্ৰৱেশদ্বাৰ পূৰণ কৰক।",eA:"❌ বিশ্লেষণত সমস্যা। পুনৰ চেষ্টা কৰক।",
+mTi:"বাস্তু মণ্ডল গ্ৰিড",mTy:"মণ্ডল প্ৰকাৰ",g64:"64 পদ (8×8)",g81:"81 পদ (9×9)",
+mI:"কোষত ক্লিক কৰি কোঠা নিযুক্ত কৰক",aR:"কোঠা বাছক তাৰপিছত কোষত ক্লিক কৰক",
+dTi:"দোষ আৰু প্ৰতিকাৰ",nDy:"বিশ্লেষণ কৰক — দোষ ইয়াত দেখা যাব।",
+re:"প্ৰতিকাৰ",sR:"শাস্ত্ৰ উদ্ধৃতি",co:"মতভেদ",av:"বিকল্প মত",
+cr:"অতি গুৰুত্বপূৰ্ণ",mo:"মধ্যম",mi:"সামান্য",
+rTi:"বাস্তু বিশ্লেষণ ৰিপোৰ্ট",nR:"বিশ্লেষণ কৰক — ৰিপোৰ্ট ইয়াত দেখা যাব।",
+shR:"ৰিপোৰ্ট শ্বেয়াৰ কৰক",dP:"📥 ডাউনলোড",wa:"💬 WhatsApp",em:"📧 Email",pr:"🖨️ প্ৰিন্ট",
+oS:"সামগ্ৰিক বাস্তু স্কোৰ",cL:"ক্লায়েণ্ট",dL:"তাৰিখ",fL:"মূল দ্বাৰ",aL:"ঠিকনা",src:"ব্যৱহৃত গ্ৰন্থ",tR:"মুখ্য প্ৰতিকাৰ",
+iM:"📱 ফোনত Install কৰক",iB:"Install",so:"বাছক...",
+dirs:["পূৱ","পশ্চিম","উত্তৰ","দক্ষিণ","উত্তৰ-পূব","উত্তৰ-পশ্চিম","দক্ষিণ-পূব","দক্ষিণ-পশ্চিম"],
+shs:["বৰ্গ","আয়তক্ষেত্ৰ","L-আকৃতি","T-আকৃতি","অনিয়মিত","ত্ৰিভুজ"],
+sls:["উত্তৰলৈ","দক্ষিণলৈ","পূৱলৈ","পশ্চিমলৈ","সমতল"],
+ws:["নাই","উত্তৰত","উত্তৰ-পূবত","পূৱত","দক্ষিণত","পশ্চিমত"],
+yn:["হয়","নাই"],
+rms:["ৰন্ধনঘৰ","শোৱাকোঠা","মুখ্য শোৱাকোঠা","শৌচাগাৰ","পূজাকোঠা","হল","চিৰি","ভঁৰাল","অফিচ","খালী"],
+brs:["খালী/Open","আংশিক","বন্ধ/Blocked"],
+gd:"শুভ",wa2:"সতৰ্ক",bd:"অশুভ"},
+en:{n:"Vastu Analyzer Pro",s:"Shastra-Based Professional Consultation",
+tabs:["📚 Books","📐 Analysis","🔯 Mandala","🔍 Dosha","📋 Report"],
+aB:"Add Book (PDF)",aBs:"Upload PDF • Arranged by priority",
+bL:"Book Library",nB:"No books added.",aI:" active",dl:"Delete",
+pHint:"↑↓ Change priority",cRule:"On conflict: higher priority (older/authoritative) book wins",
+aTs:["📍 Plot","🏠 Building","💧 Environment"],
+pTi:"Plot Analysis",pSh:"Plot Shape",pSl:"Plot Slope",rD:"Road Direction",wS:"Water Source",sur:"Surroundings",pSz:"Plot Size (ft)",
+bTi:"Building Layout",mE:"Main Entrance *",ki:"Kitchen",be:"Bedroom",mb:"Master Bedroom",to:"Toilet",st:"Staircase",br:"Brahmasthan",po:"Puja Room",ha:"Hall",
+eTi:"Environment Analysis",nT:"Temple nearby?",nW:"Water body nearby?",nC:"Cemetery nearby?",nH:"Hospital nearby?",tP:"Large tree in plot?",tD:"Tree direction",ai:"Additional Info",
+cN:"Client Name",ad:"Property Address",
+an:"🔍 Full Vastu Analysis",ang:"⏳ Analyzing...",
+nbW:"⚠️ Add at least one book.",fW:"⚠️ Fill name and entrance direction.",eA:"❌ Analysis failed. Try again.",
+mTi:"Vastu Mandala Grid",mTy:"Mandala Type",g64:"64 Pada (8×8)",g81:"81 Pada (9×9)",
+mI:"Click cells to assign rooms",aR:"Select a room then click a cell",
+dTi:"Dosha & Remedies",nDy:"Run analysis — doshas will appear here.",
+re:"Remedy",sR:"Shastra Reference",co:"Conflict",av:"Alternative View",
+cr:"Critical",mo:"Moderate",mi:"Minor",
+rTi:"Vastu Analysis Report",nR:"Run analysis — report will appear here.",
+shR:"Share Report",dP:"📥 Download",wa:"💬 WhatsApp",em:"📧 Email",pr:"🖨️ Print",
+oS:"Overall Vastu Score",cL:"Client",dL:"Date",fL:"Entrance",aL:"Address",src:"Sources",tR:"Top Remedies",
+iM:"📱 Install App",iB:"Install",so:"Select...",
+dirs:["East","West","North","South","North-East","North-West","South-East","South-West"],
+shs:["Square","Rectangle","L-Shape","T-Shape","Irregular","Triangle"],
+sls:["Slopes North","Slopes South","Slopes East","Slopes West","Level"],
+ws:["None","North","North-East","East","South","West"],
+yn:["Yes","No"],
+rms:["Kitchen","Bedroom","Master Bedroom","Toilet","Puja Room","Hall","Staircase","Store","Office","Empty"],
+brs:["Open/Empty","Partial","Blocked"],
+gd:"Good",wa2:"Warning",bd:"Bad"},
+hi:{n:"वास्तु विश्लेषक Pro",s:"शास्त्र-आधारित पेशेवर परामर्श",
+tabs:["📚 ग्रंथ","📐 विश्लेषण","🔯 मंडल","🔍 दोष","📋 रिपोर्ट"],
+aB:"पुस्तक जोड़ें (PDF)",aBs:"PDF अपलोड करें • प्राथमिकता से व्यवस्थित",
+bL:"ग्रंथागार",nB:"कोई पुस्तक नहीं।",aI:" सक्रिय",dl:"हटाएं",
+pHint:"↑↓ प्राथमिकता बदलें",cRule:"विरोध होने पर: अधिक प्राचीन/प्रामाणिक ग्रंथ को प्राथमिकता",
+aTs:["📍 भूखंड","🏠 भवन","💧 पर्यावरण"],
+pTi:"भूखंड विश्लेषण",pSh:"भूखंड आकार",pSl:"भूखंड ढाल",rD:"सड़क दिशा",wS:"जल स्रोत",sur:"आस-पास",pSz:"भूखंड आकार (ft)",
+bTi:"भवन लेआउट",mE:"मुख्य द्वार *",ki:"रसोई",be:"शयनकक्ष",mb:"मुख्य शयनकक्ष",to:"शौचालय",st:"सीढ़ी",br:"ब्रह्मस्थान",po:"पूजाघर",ha:"हॉल",
+eTi:"पर्यावरण विश्लेषण",nT:"मंदिर पास में?",nW:"जल स्रोत पास में?",nC:"श्मशान/कब्रिस्तान?",nH:"अस्पताल पास में?",tP:"भूखंड में बड़ा पेड़?",tD:"पेड़ की दिशा",ai:"अतिरिक्त जानकारी",
+cN:"ग्राहक का नाम",ad:"संपत्ति का पता",
+an:"🔍 पूर्ण वास्तु विश्लेषण",ang:"⏳ विश्लेषण हो रहा है...",
+nbW:"⚠️ कम से कम एक पुस्तक जोड़ें।",fW:"⚠️ नाम और मुख्य द्वार भरें।",eA:"❌ विश्लेषण में समस्या।",
+mTi:"वास्तु मंडल ग्रिड",mTy:"मंडल प्रकार",g64:"64 पद (8×8)",g81:"81 पद (9×9)",
+mI:"कोष पर क्लिक कर कमरा नियुक्त करें",aR:"कमरा चुनें फिर कोष पर क्लिक करें",
+dTi:"दोष और उपाय",nDy:"विश्लेषण करें — दोष यहाँ दिखेंगे।",
+re:"उपाय",sR:"शास्त्र उद्धरण",co:"विरोध",av:"वैकल्पिक मत",
+cr:"अतिगंभीर",mo:"मध्यम",mi:"सामान्य",
+rTi:"वास्तु विश्लेषण रिपोर्ट",nR:"विश्लेषण करें — रिपोर्ट यहाँ दिखेगी।",
+shR:"रिपोर्ट साझा करें",dP:"📥 डाउनलोड",wa:"💬 WhatsApp",em:"📧 Email",pr:"🖨️ प्रिंट",
+oS:"समग्र वास्तु स्कोर",cL:"ग्राहक",dL:"तारीख",fL:"मुख्य द्वार",aL:"पता",src:"ग्रंथ",tR:"मुख्य उपाय",
+iM:"📱 App इंस्टॉल करें",iB:"Install",so:"चुनें...",
+dirs:["पूर्व","पश्चिम","उत्तर","दक्षिण","उत्तर-पूर्व","उत्तर-पश्चिम","दक्षिण-पूर्व","दक्षिण-पश्चिम"],
+shs:["वर्ग","आयत","L-आकार","T-आकार","अनियमित","त्रिभुज"],
+sls:["उत्तर ढाल","दक्षिण ढाल","पूर्व ढाल","पश्चिम ढाल","समतल"],
+ws:["नहीं","उत्तर","उत्तर-पूर्व","पूर्व","दक्षिण","पश्चिम"],
+yn:["हाँ","नहीं"],
+rms:["रसोई","शयनकक्ष","मुख्य शयनकक्ष","शौचालय","पूजाघर","हॉल","सीढ़ी","भंडार","कार्यालय","रिक्त"],
+brs:["खुला/Open","आंशिक","बंद/Blocked"],
+gd:"शुभ",wa2:"सावधान",bd:"अशुभ"}
 };
 
-// ── State ──
-let lang = "as", curTab = 0;
-let books = [], report = null, loading = false;
-let form = { clientName:"", address:"", facing:"", plotShape:"", rooms:"", floorB64:null, floorName:"", floorType:"" };
-let deferredInstall = null;
+let lang="as",ct=0,ast=0,loading=false;
+let books=[],report=null;
+let mSize=9,mGrid={},curRoom="";
+let dI=null;
+let F={cN:"",ad:"",pSh:"",pSl:"",rD:"",wS:"",sur:"",pSz:"",mE:"",ki:"",be:"",mb:"",to:"",st:"",br:"",po:"",ha:"",nT:"",nW:"",nC:"",nH:"",tP:"",tD:"",ai:"",_e:""};
 
-const t = () => LANG[lang];
+const t=()=>T[lang];
+const sc=s=>s>=75?"#27ae60":s>=50?"#e67e22":"#e74c3c";
 
-// ── PWA Install ──
-window.addEventListener("beforeinstallprompt", e => {
-  e.preventDefault(); deferredInstall = e; render();
-});
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dI=e;R();});
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+const b64=f=>new Promise((r,j)=>{const x=new FileReader();x.onload=()=>r(x.result.split(",")[1]);x.onerror=j;x.readAsDataURL(f);});
 
-function installApp() {
-  if (!deferredInstall) return;
-  deferredInstall.prompt();
-  deferredInstall.userChoice.then(() => { deferredInstall = null; render(); });
+function setL(l){lang=l;document.getElementById("hT").textContent=t().n;document.getElementById("hS").textContent=t().s;RT();R();}
+function RT(){document.getElementById("tabs").innerHTML=t().tabs.map((tb,i)=>`<button class="tb${ct===i?" act":""}" onclick="ST(${i})">${tb}</button>`).join("");}
+function ST(n){ct=n;RT();R();}
+
+function sel(k,lb,opts){
+  const v=F[k]||"";
+  return`<label class="lbl">${lb}</label><select class="sl" style="color:${v?"var(--tx)":"var(--sb)"}" onchange="F['${k}']=this.value"><option value="">${t().so}</option>${opts.map(o=>`<option value="${o}"${v===o?" selected":""}>${o}</option>`).join("")}</select>`;
 }
 
-// ── Service Worker ──
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(() => {});
+function R(){
+  const m=document.getElementById("main");
+  if(ct===0)m.innerHTML=rB();
+  else if(ct===1)m.innerHTML=rA();
+  else if(ct===2)m.innerHTML=rM();
+  else if(ct===3)m.innerHTML=rD();
+  else m.innerHTML=rR();
+  AE();
 }
 
-// ── Helpers ──
-const scoreColor = s => s >= 75 ? "#27ae60" : s >= 50 ? "#e67e22" : "#e74c3c";
-const statusInfo = s => ({ good:{bg:"#0e2a0e",c:"#90EE90"}, warning:{bg:"#2a1a00",c:"#FFD700"}, bad:{bg:"#2a0a0a",c:"#FF6B6B"} }[s] || {bg:"#222",c:"#ccc"});
-const statusLabel = s => ({ good: t().good, warning: t().warn, bad: t().bad }[s] || s);
-
-function showToast(msg) {
-  const el = document.getElementById("toast");
-  el.textContent = msg; el.classList.add("show");
-  setTimeout(() => el.classList.remove("show"), 2500);
-}
-
-function toB64(file) {
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload = () => res(r.result.split(",")[1]);
-    r.onerror = rej; r.readAsDataURL(file);
-  });
-}
-
-// ── Language ──
-function setLang(l) {
-  lang = l;
-  document.getElementById("hTitle").textContent = t().title;
-  document.getElementById("hSub").textContent = t().sub;
-  ["tl0","tl1","tl2"].forEach((id,i) => document.getElementById(id).textContent = t().tabs[i]);
-  render();
-}
-
-// ── Tabs ──
-function showTab(n) {
-  curTab = n;
-  [0,1,2].forEach(i => {
-    document.getElementById("tab"+i).classList.toggle("active", i===n);
-  });
-  render();
-}
-
-// ── Render ──
-function render() {
-  const main = document.getElementById("main");
-  if (curTab === 0) main.innerHTML = renderBooks();
-  else if (curTab === 1) main.innerHTML = renderAnalysis();
-  else main.innerHTML = renderReport();
-  attachEvents();
-}
-
-function renderBooks() {
-  const install = deferredInstall ? `
-    <div class="install-banner">
-      <div style="flex:1;font-size:13px;color:#90EE90">${t().installMsg}</div>
-      <button class="install-btn" onclick="installApp()">${t().installBtn}</button>
-    </div>` : "";
-
-  const bookList = books.length === 0
-    ? `<div class="card" style="text-align:center;color:var(--sub);font-style:italic;padding:32px">${t().noBooks}</div>`
-    : books.map((b,i) => `
-      <div class="card book-item">
-        <div class="book-info">
-          <span class="book-icon">📕</span>
-          <div>
-            <div class="book-name">${b.name}</div>
-            <div class="book-size">${b.size} KB</div>
-          </div>
-        </div>
-        <button class="del-btn" onclick="delBook(${i})">${t().del}</button>
-      </div>`).join("");
-
-  const readyBadge = books.length > 0
-    ? `<span class="badge badge-green">✅ ${books.length}${t().booksReady}</span>` : "";
-
-  const goBtn = books.length > 0
-    ? `<button class="go-next" onclick="showTab(1)">${t().goAnalyze}</button>` : "";
-
-  return `
-    ${install}
-    <div class="upload-zone" onclick="document.getElementById('bookInput').click()">
-      <div class="upload-icon">📚</div>
-      <div class="upload-title">${t().addBook}</div>
-      <div class="upload-sub">${t().addBookSub}</div>
-    </div>
-    <input type="file" id="bookInput" accept="application/pdf" multiple style="display:none">
-    <div class="section-title">
-      <span>📖 ${t().bookLib}</span>
-      ${readyBadge}
-    </div>
-    ${bookList}
-    ${goBtn}`;
-}
-
-function renderAnalysis() {
-  const dirOpts = t().dirs.map(d => `<option value="${d}" ${form.facing===d?"selected":""}>${d}</option>`).join("");
-  const shapeOpts = t().shapes.map(s => `<option value="${s}" ${form.plotShape===s?"selected":""}>${s}</option>`).join("");
-  const floorLabel = form.floorName
-    ? `<span style="color:#90EE90;font-size:13px">✅ ${form.floorName}</span>`
-    : `<span style="color:var(--sub);font-size:13px">${t().uploadFloor}</span>`;
-  const noBookHint = books.length === 0
-    ? `<div class="no-book-hint">${t().noBookHint}</div>` : "";
-  const errBox = form._err ? `<div class="error-box">${form._err}</div>` : "";
-
-  return `
-    <div style="font-size:14px;font-weight:bold;color:#C9A84C;margin-bottom:16px">🏠 ${t().houseTitle}</div>
-    <label class="form-label">${t().clientName}</label>
-    <input class="form-input" id="fName" value="${form.clientName}" placeholder="${t().clientPh}" oninput="form.clientName=this.value">
-    <label class="form-label">${t().address}</label>
-    <input class="form-input" id="fAddr" value="${form.address}" placeholder="${t().addressPh}" oninput="form.address=this.value">
-    <label class="form-label">${t().facing}</label>
-    <select class="form-select" id="fFacing" onchange="form.facing=this.value" style="color:${form.facing?'var(--text)':'var(--sub)'}">
-      <option value="">${t().selectDir}</option>
-      ${dirOpts}
-    </select>
-    <label class="form-label">${t().plotShape}</label>
-    <select class="form-select" id="fShape" onchange="form.plotShape=this.value" style="color:${form.plotShape?'var(--text)':'var(--sub)'}">
-      <option value="">${t().selectShape}</option>
-      ${shapeOpts}
-    </select>
-    <label class="form-label">${t().rooms}</label>
-    <textarea class="form-textarea" id="fRooms" placeholder="${t().roomsPh}" oninput="form.rooms=this.value">${form.rooms}</textarea>
-    <label class="form-label">${t().floorPlan}</label>
-    <div class="card" style="text-align:center;cursor:pointer;padding:16px" onclick="document.getElementById('floorInput').click()">
-      ${floorLabel}
-    </div>
-    <input type="file" id="floorInput" accept="image/*" style="display:none">
-    <br>
-    ${errBox}
-    <button class="analyze-btn ${loading?'loading':'ready'}" onclick="${loading?'':' doAnalyze()'}">${loading?t().analyzing:t().analyze}</button>
-    ${noBookHint}`;
-}
-
-function renderReport() {
-  if (!report) return `
-    <div class="empty-state">
-      <div class="empty-icon">📋</div>
-      <div style="font-size:14px;margin-bottom:6px">${t().noReport}</div>
-      <div style="font-size:12px">${t().analyzeFirst}</div>
-    </div>`;
-
-  const sections = (report.sections||[]).map(sec => {
-    const si = statusInfo(sec.status);
-    const shloka = sec.shloka ? `
-      <div class="shloka-box">
-        <div class="shloka-text">"${sec.shloka.sanskrit}"</div>
-        ${sec.shloka.transliteration ? `<div class="shloka-tr">${sec.shloka.transliteration}</div>` : ""}
-        <div class="shloka-meaning">📖 ${sec.shloka.meaning}</div>
-        <span class="shloka-src">📚 ${sec.shloka.source}</span>
-      </div>` : "";
-    const rems = sec.remedies?.length ? `
-      <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:8px">
-        <div style="font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">🔧 ${t().remedies}</div>
-        ${sec.remedies.map(r=>`<div class="remedy-item"><span style="color:#C9A84C;flex-shrink:0">◆</span><span>${r}</span></div>`).join("")}
-      </div>` : "";
-    return `
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <div style="font-size:14px;font-weight:bold">${sec.icon} ${sec.title}</div>
-          <div style="background:${scoreColor(sec.score)};color:#fff;padding:3px 12px;border-radius:12px;font-size:12px;font-weight:bold">${sec.score}/100</div>
-        </div>
-        <span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:11px;font-weight:bold;background:${si.bg};color:${si.c};margin-bottom:10px">${statusLabel(sec.status)}</span>
-        ${shloka}
-        <div style="font-size:13px;color:#c4a882;line-height:1.85">${sec.analysis}</div>
-        ${rems}
-      </div>`;
-  }).join("");
-
-  const topRems = (report.topRemedies||[]).map((r,i) => `
-    <div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);font-size:13px">
-      <div style="width:26px;height:26px;border-radius:50%;background:#C9A84C;color:#150800;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:12px;flex-shrink:0">${i+1}</div>
-      <div>${r}</div>
+// ── BOOKS ──
+function rB(){
+  const tt=t();
+  const ac=books.filter(b=>b.on).length;
+  const inst=dI?`<div class="iban"><div style="flex:1;font-size:12px;color:#90EE90">${tt.iM}</div><button class="ibtn" onclick="instA()">${tt.iB}</button></div>`:"";
+  const bl=books.length===0?`<div class="card" style="text-align:center;color:var(--sb);font-style:italic;padding:28px">${tt.nB}</div>`:books.map((b,i)=>`
+    <div class="card" style="display:flex;align-items:center;gap:10px;padding:11px 13px">
+      <button class="btog" style="background:${b.on?"var(--g)":"#333"}" onclick="tgB(${i})">
+        <div class="bdot" style="left:${b.on?"18":"2"}px"></div>
+      </button>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:bold;color:${b.on?"var(--tx)":"var(--sb)"};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.name}</div>
+        <div style="font-size:10px;color:var(--sb);margin-top:2px">${b.sz}KB <span style="font-size:9px;padding:1px 6px;border-radius:5px;background:#3d2500;color:var(--g);margin-left:5px">#${i+1}</span>${b.on?` <span class="bdg bg">✓ Active</span>`:""}</div>
+      </div>
+      <div style="display:flex;gap:5px">
+        ${i>0?`<button onclick="mvB(${i},-1)" style="background:#2d1500;border:1px solid var(--b);border-radius:5px;color:var(--g);padding:3px 7px;cursor:pointer;font-size:11px">↑</button>`:""}
+        ${i<books.length-1?`<button onclick="mvB(${i},1)" style="background:#2d1500;border:1px solid var(--b);border-radius:5px;color:var(--g);padding:3px 7px;cursor:pointer;font-size:11px">↓</button>`:""}
+        <button onclick="dlB(${i})" style="background:#2a0a0a;border:1px solid #FF6B6B44;color:#FF6B6B;padding:3px 8px;border-radius:5px;cursor:pointer;font-size:10px;font-family:inherit">${tt.dl}</button>
+      </div>
     </div>`).join("");
+  return`${inst}
+    <div class="card" style="border:2px dashed var(--g)55;background:var(--cd);text-align:center;padding:22px 14px;cursor:pointer" onclick="document.getElementById('bi').click()">
+      <div style="font-size:30px;margin-bottom:8px">📚</div>
+      <div style="color:var(--g);font-size:14px;font-weight:bold;margin-bottom:4px">${tt.aB}</div>
+      <div style="color:var(--sb);font-size:11px">${tt.aBs}</div>
+    </div>
+    <input type="file" id="bi" accept="application/pdf" multiple style="display:none">
+    <div class="sh"><span>📖 ${tt.bL}</span>${ac>0?`<span class="bdg bg">${ac}${tt.aI}</span>`:""}</div>
+    ${books.length>0?`<div style="font-size:10px;color:var(--sb);margin-bottom:9px;font-style:italic">${tt.pHint}</div>`:""}
+    ${bl}
+    ${books.length>0?`<div class="card" style="font-size:10px;color:#c4a0ff;border-color:#9B59B633">⚖️ ${tt.cRule}</div>`:""}`;
+}
+function tgB(i){books[i].on=!books[i].on;R();}
+function dlB(i){books.splice(i,1);R();}
+function mvB(i,d){const b=books.splice(i,1)[0];books.splice(i+d,0,b);R();}
+function instA(){if(!dI)return;dI.prompt();dI.userChoice.then(()=>{dI=null;R();});}
 
-  return `
-    <div class="report-cover">
-      <div style="font-size:34px;margin-bottom:8px">🕉️</div>
-      <div style="font-size:18px;font-weight:bold;color:#C9A84C;margin-bottom:4px">${report.clientName}</div>
-      <div style="font-size:11px;color:#c4a882;margin-bottom:16px">${report.date} • ${report.facing}</div>
-      <div class="score-ring" style="background:conic-gradient(#C9A84C ${report.overallScore*3.6}deg,#2a1000 0)">
-        <div class="score-inner">${report.overallScore}</div>
+// ── ANALYSIS ──
+function rA(){
+  const tt=t();
+  const subs=tt.aTs.map((s,i)=>`<button class="itb${ast===i?" act":""}" onclick="SA(${i})">${s}</button>`).join("");
+  let c="";
+  if(ast===0){c=`
+    <div class="sh">📍 ${tt.pTi}</div>
+    <label class="lbl">${tt.cN}</label><input class="inp" value="${F.cN}" placeholder="..." oninput="F.cN=this.value">
+    <label class="lbl">${tt.ad}</label><input class="inp" value="${F.ad}" placeholder="..." oninput="F.ad=this.value">
+    ${sel("pSh",tt.pSh,tt.shs)}${sel("pSl",tt.pSl,tt.sls)}${sel("rD",tt.rD,tt.dirs)}${sel("wS",tt.wS,tt.ws)}
+    <label class="lbl">${tt.sur}</label><textarea class="ta" oninput="F.sur=this.value" placeholder="...">${F.sur}</textarea>
+    <label class="lbl">${tt.pSz}</label><input class="inp" value="${F.pSz}" placeholder="40×60" oninput="F.pSz=this.value">`;
+  }else if(ast===1){c=`
+    <div class="sh">🏠 ${tt.bTi}</div>
+    ${sel("mE",tt.mE,tt.dirs)}${sel("ki",tt.ki,tt.dirs)}${sel("be",tt.be,tt.dirs)}${sel("mb",tt.mb,tt.dirs)}
+    ${sel("to",tt.to,tt.dirs)}${sel("st",tt.st,tt.dirs)}${sel("br",tt.br,tt.brs)}${sel("po",tt.po,tt.dirs)}${sel("ha",tt.ha,tt.dirs)}`;
+  }else{c=`
+    <div class="sh">💧 ${tt.eTi}</div>
+    ${sel("nT",tt.nT,tt.yn)}${sel("nW",tt.nW,tt.yn)}${sel("nC",tt.nC,tt.yn)}${sel("nH",tt.nH,tt.yn)}
+    ${sel("tP",tt.tP,tt.yn)}${F.tP===tt.yn[0]?sel("tD",tt.tD,tt.dirs):""}
+    <label class="lbl">${tt.ai}</label><textarea class="ta" oninput="F.ai=this.value" placeholder="...">${F.ai||""}</textarea>`;
+  }
+  const ab=books.filter(b=>b.on);
+  return`<div class="itabs">${subs}</div>${c}
+    ${ab.length===0?`<div class="err">${tt.nbW}</div>`:""}
+    ${F._e?`<div class="err">${F._e}</div>`:""}
+    <button class="btn btn-p" onclick="doAn()" ${loading?"disabled":""}>
+      ${loading?tt.ang:tt.an}
+    </button>`;
+}
+function SA(n){ast=n;R();}
+
+// ── MANDALA ──
+function rM(){
+  const tt=t();
+  const n=mSize;
+  const cells=Array.from({length:n*n},(_,idx)=>{
+    const r=Math.floor(idx/n),c=idx%n,k=`${r}_${c}`;
+    const rm=mGrid[k]||"";
+    const ib=n===9&&r>=3&&r<=5&&c>=3&&c<=5;
+    return`<div class="gc${ib?" bra":rm?" sel":""}" onclick="gC(${r},${c})" title="${rm||"Empty"}">${rm?rm.substring(0,4):ib?"ब्र":""}</div>`;
+  }).join("");
+  const rbs=tt.rms.map(r=>`<button onclick="sGR('${r}')" style="padding:5px 9px;background:${curRoom===r?"var(--g)22":"#1a1000"};border:1px solid ${curRoom===r?"var(--g)":"var(--b)"};border-radius:6px;color:${curRoom===r?"var(--g)":"var(--sb)"};font-size:10px;cursor:pointer;font-family:inherit;margin:2px">${r}</button>`).join("");
+  return`
+    <div class="sh">🔯 ${tt.mTi}</div>
+    <div class="card">
+      <label class="lbl">${tt.mTy}</label>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button onclick="setG(8)" style="flex:1;padding:8px;background:${n===8?"var(--g)22":"#1a1000"};border:1px solid ${n===8?"var(--g)":"var(--b)"};border-radius:7px;color:${n===8?"var(--g)":"var(--sb)"};font-size:11px;cursor:pointer;font-family:inherit">${tt.g64}</button>
+        <button onclick="setG(9)" style="flex:1;padding:8px;background:${n===9?"var(--g)22":"#1a1000"};border:1px solid ${n===9?"var(--g)":"var(--b)"};border-radius:7px;color:${n===9?"var(--g)":"var(--sb)"};font-size:11px;cursor:pointer;font-family:inherit">${tt.g81}</button>
       </div>
-      <div style="font-size:11px;color:var(--sub);margin-top:6px">${t().overallScore}</div>
+      <div style="font-size:10px;color:var(--sb);margin-bottom:10px">👆 ${tt.mI}</div>
+      <div class="gwrap"><div class="vgrid" style="grid-template-columns:repeat(${n},30px)">${cells}</div></div>
     </div>
-
     <div class="card">
-      <div style="font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">📋 ${t().summary}</div>
-      <div style="font-size:13px;color:#c4a882;line-height:1.85">${report.summary}</div>
+      <div class="lbl">${tt.aR}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">${rbs}</div>
+      ${curRoom?`<div style="margin-top:8px;font-size:11px;color:var(--g)">✓ Selected: ${curRoom}</div>`:""}
+      <button onclick="sGR('')" style="margin-top:8px;padding:5px 12px;background:#2a0a0a;border:1px solid #FF6B6B44;border-radius:6px;color:#FF6B6B;font-size:10px;cursor:pointer;font-family:inherit">🗑 Clear mode</button>
     </div>
+    <div class="card" style="font-size:10px;color:var(--sb)">
+      <div style="font-weight:bold;color:var(--g);margin-bottom:6px">📌 Legend</div>
+      <span style="margin-right:12px">🟡 = ব্ৰহ্মস্থান</span><span style="margin-right:12px">🔵 = নিযুক্ত কোঠা</span><span>⬜ = খালী</span>
+    </div>`;
+}
+function setG(n){mSize=n;R();}
+function sGR(r){curRoom=r;R();}
+function gC(r,c){const k=`${r}_${c}`;if(curRoom){mGrid[k]=curRoom;}else{delete mGrid[k];}R();}
 
-    ${sections}
+// ── ANALYZE ──
+async function doAn(){
+  const tt=t();
+  const ab=books.filter(b=>b.on);
+  if(!ab.length){F._e=tt.nbW;R();return;}
+  if(!F.cN||!F.mE){F._e=tt.fW;R();return;}
+  F._e="";loading=true;report=null;R();
+  try{
+    const ln=lang==="as"?"Assamese (অসমীয়া)":lang==="hi"?"Hindi (हिंदी)":"English";
+    const bp=ab.map((b,i)=>`Priority ${i+1}: "${b.name}"`).join("; ");
+    const gi=Object.entries(mGrid).map(([k,v])=>`Cell ${k}=${v}`).join(", ")||"Not mapped";
+    const sys=`You are a world-class Vastu Shastra expert. ONLY use knowledge from the provided PDF books. Never use external knowledge.
+BOOK PRIORITY: ${bp}
+CONFLICT RULE: When books disagree, the higher-priority book's view takes precedence. Always show conflicts with alternative views.
+Generate a comprehensive analysis in ${ln}.
+Return ONLY valid JSON (no markdown, no code fences):
+{"clientName":"","address":"","date":"","mainEntrance":"","overallScore":0-100,"summary":"2-3 sentences","plotAnalysis":{"score":0-100,"observations":[],"doshas":[{"name":"","severity":"critical|moderate|minor","description":"","remedy":"","shloka":{"sanskrit":"exact quote from book","transliteration":"","meaning":"","source":"bookname, chapter/page"},"conflict":null}]},"buildingAnalysis":{"score":0-100,"observations":[],"doshas":[]},"mandalaAnalysis":{"score":0-100,"brahmasthanaStatus":"","gridObservations":[],"doshas":[]},"environmentAnalysis":{"score":0-100,"observations":[],"doshas":[]},"topRemedies":[],"booksUsed":[]}
+For conflict field use: {"primaryBook":"","primaryView":"","alternativeBook":"","alternativeView":""} or null if no conflict.`;
+    const uc=[
+      ...ab.map(b=>({type:"document",source:{type:"base64",media_type:"application/pdf",data:b.b64},title:b.name})),
+      {type:"text",text:`CLIENT: ${F.cN}\nADDRESS: ${F.ad||"N/A"}\nDATE: ${new Date().toLocaleDateString(lang==="as"?"as-IN":lang==="hi"?"hi-IN":"en-IN",{year:"numeric",month:"long",day:"numeric"})}\n\nPLOT:\n- Shape: ${F.pSh||"N/A"}\n- Slope: ${F.pSl||"N/A"}\n- Road: ${F.rD||"N/A"}\n- Water: ${F.wS||"N/A"}\n- Surroundings: ${F.sur||"N/A"}\n- Size: ${F.pSz||"N/A"}\n\nBUILDING:\n- Main Entrance: ${F.mE}\n- Kitchen: ${F.ki||"N/A"}\n- Bedroom: ${F.be||"N/A"}\n- Master Bed: ${F.mb||"N/A"}\n- Toilet: ${F.to||"N/A"}\n- Staircase: ${F.st||"N/A"}\n- Brahmasthan: ${F.br||"N/A"}\n- Puja: ${F.po||"N/A"}\n- Hall: ${F.ha||"N/A"}\n\nENVIRONMENT:\n- Temple: ${F.nT||"N/A"}\n- Water body: ${F.nW||"N/A"}\n- Cemetery: ${F.nC||"N/A"}\n- Hospital: ${F.nH||"N/A"}\n- Tree: ${F.tP||"N/A"} ${F.tD?"("+F.tD+")":""}\n- Additional: ${F.ai||"N/A"}\n\nMANDALA GRID (${mSize}×${mSize}): ${gi}\nBOOK PRIORITY: ${bp}`}
+    ];
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:6000,system:sys,messages:[{role:"user",content:uc}]})});
+    const data=await res.json();
+    const txt=data.content.map(c=>c.text||"").join("").replace(/```json|```/g,"").trim();
+    report=JSON.parse(txt);
+    loading=false;ST(3);
+  }catch(e){F._e=t().eA;loading=false;R();}
+}
 
-    <div class="card" style="background:linear-gradient(135deg,#3d1800,#150800)">
-      <div style="font-size:13px;font-weight:bold;color:#C9A84C;margin-bottom:14px">⭐ ${t().topRemedies}</div>
-      ${topRems}
+// ── DOSHA ──
+function rD(){
+  const tt=t();
+  if(!report)return`<div style="text-align:center;padding:60px 14px;color:var(--sb)"><div style="font-size:44px;margin-bottom:12px">🔍</div><div>${tt.nDy}</div></div>`;
+  const all=[
+    ...(report.plotAnalysis?.doshas||[]).map(d=>({...d,sec:"📍 Plot"})),
+    ...(report.buildingAnalysis?.doshas||[]).map(d=>({...d,sec:"🏠 Building"})),
+    ...(report.mandalaAnalysis?.doshas||[]).map(d=>({...d,sec:"🔯 Mandala"})),
+    ...(report.environmentAnalysis?.doshas||[]).map(d=>({...d,sec:"💧 Env"})),
+  ];
+  const cr=all.filter(d=>d.severity==="critical"),mo=all.filter(d=>d.severity==="moderate"),mi=all.filter(d=>d.severity==="minor");
+  const sv=s=>s==="critical"?tt.cr:s==="moderate"?tt.mo:tt.mi;
+  const sc2=s=>s==="critical"?"#e74c3c":s==="moderate"?"#e67e22":"#27ae60";
+  const dc=(d)=>`<div class="dc ${d.severity==="critical"?"dcr":d.severity==="moderate"?"dcw":"dcg"}">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px">
+      <div><div style="font-size:13px;font-weight:bold">${d.name}</div><div style="font-size:10px;color:var(--sb)">${d.sec}</div></div>
+      <span class="bdg ${d.severity==="critical"?"br":d.severity==="moderate"?"bw":"bg"}">${sv(d.severity)}</span>
     </div>
+    <div style="font-size:12px;color:#c4a882;line-height:1.75;margin-bottom:9px">${d.description}</div>
+    ${d.shloka?.sanskrit?`<div class="shbox"><div class="shs">"${d.shloka.sanskrit}"</div>${d.shloka.transliteration?`<div style="font-size:10px;color:var(--sb);font-style:italic;margin-bottom:4px">${d.shloka.transliteration}</div>`:""}<div class="shm">📖 ${d.shloka.meaning}</div><span class="shsr">📚 ${d.shloka.source}</span></div>`:""}
+    <div style="font-size:10px;color:var(--sb);text-transform:uppercase;letter-spacing:.7px;margin:7px 0 5px">🔧 ${tt.re}</div>
+    <div style="font-size:12px;color:#d4c4a8;line-height:1.7">${d.remedy}</div>
+    ${d.conflict?`<div class="cbox"><div style="font-weight:bold;margin-bottom:4px">⚖️ ${tt.co}</div><div><b>${d.conflict.primaryBook}:</b> ${d.conflict.primaryView}</div><div style="margin-top:4px;color:#a080c0"><b>${tt.av} (${d.conflict.alternativeBook}):</b> ${d.conflict.alternativeView}</div></div>`:""}
+  </div>`;
+  return`
+    <div style="display:flex;gap:8px;margin-bottom:13px">
+      ${[{c:cr,cl:"#e74c3c",l:tt.cr},{c:mo,cl:"#e67e22",l:tt.mo},{c:mi,cl:"#27ae60",l:tt.mi}].map(x=>`<div class="card" style="flex:1;text-align:center;padding:9px"><div style="font-size:18px;font-weight:bold;color:${x.cl}">${x.c.length}</div><div style="font-size:9px;color:var(--sb)">${x.l}</div></div>`).join("")}
+    </div>
+    ${cr.length?`<div style="font-size:11px;color:#e74c3c;margin-bottom:8px;font-weight:bold">🔴 ${tt.cr}</div>${cr.map(dc).join("")}`:""}
+    ${mo.length?`<div style="font-size:11px;color:#e67e22;margin:10px 0 8px;font-weight:bold">🟡 ${tt.mo}</div>${mo.map(dc).join("")}`:""}
+    ${mi.length?`<div style="font-size:11px;color:#27ae60;margin:10px 0 8px;font-weight:bold">🟢 ${tt.mi}</div>${mi.map(dc).join("")}`:""}`;
+}
 
+// ── REPORT ──
+function rR(){
+  const tt=t();
+  if(!report)return`<div style="text-align:center;padding:60px 14px;color:var(--sb)"><div style="font-size:44px;margin-bottom:12px">📋</div><div>${tt.nR}</div></div>`;
+  const ov=report.overallScore||0;
+  const secs=[{ti:"📍 Plot",d:report.plotAnalysis},{ti:"🏠 Building",d:report.buildingAnalysis},{ti:"🔯 Mandala",d:report.mandalaAnalysis},{ti:"💧 Env",d:report.environmentAnalysis}].filter(s=>s.d);
+  return`
+    <div class="card" style="background:linear-gradient(135deg,#3d1800,#150800);text-align:center;border-color:var(--g)44">
+      <div style="font-size:30px;margin-bottom:8px">🕉️</div>
+      <div style="font-size:17px;font-weight:bold;color:var(--g);margin-bottom:3px">${report.clientName}</div>
+      <div style="font-size:10px;color:#c4a882;margin-bottom:13px">${report.date} • ${report.mainEntrance}</div>
+      <div class="sr" style="background:conic-gradient(var(--g) ${ov*3.6}deg,#2a1000 0)">
+        <div class="si" style="width:66px;height:66px;font-size:20px;background:#150800">${ov}</div>
+      </div>
+      <div style="font-size:10px;color:var(--sb);margin-top:5px">${tt.oS}</div>
+    </div>
+    <div class="card"><div style="font-size:10px;color:var(--sb);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px">📋 Summary</div>
+    <div style="font-size:12px;color:#c4a882;line-height:1.8">${report.summary}</div></div>
+    ${secs.map(s=>`<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px">
+        <div style="font-size:13px;font-weight:bold">${s.ti}</div>
+        <div style="background:${sc(s.d.score||0)};color:#fff;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:bold">${s.d.score}/100</div>
+      </div>
+      ${(s.d.observations||s.d.gridObservations||[]).map(o=>`<div style="font-size:12px;color:#c4a882;padding:4px 0;border-bottom:1px dashed var(--b)">• ${o}</div>`).join("")}
+      ${s.d.brahmasthanaStatus?`<div style="font-size:12px;color:#FFD700;margin-top:7px">🔯 Brahmasthan: ${s.d.brahmasthanaStatus}</div>`:""}
+    </div>`).join("")}
+    ${(report.topRemedies||[]).length?`<div class="card" style="background:linear-gradient(135deg,#1a0800,#2d1000)">
+      <div style="font-size:13px;font-weight:bold;color:var(--g);margin-bottom:11px">⭐ ${tt.tR}</div>
+      ${report.topRemedies.map((r,i)=>`<div style="display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--b);font-size:12px"><div style="width:22px;height:22px;border-radius:50%;background:var(--g);color:#1a0800;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:11px;flex-shrink:0">${i+1}</div><div>${r}</div></div>`).join("")}
+    </div>`:""}
     <div class="card">
-      <div style="font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;text-align:center">📤 ${t().shareReport}</div>
-      <div class="share-grid">
-        <button class="share-btn" style="background:linear-gradient(135deg,#7a3a0a,#C9A84C);color:#1a0800" onclick="doDownload()">${t().dlPDF}</button>
-        <button class="share-btn" style="background:#128C7E;color:#fff" onclick="doWhatsApp()">${t().whatsapp}</button>
-        <button class="share-btn" style="background:#1a3a6a;color:#fff" onclick="doEmail()">${t().emailBtn}</button>
-        <button class="share-btn" style="background:#1a1a1a;color:var(--text);border:1px solid var(--border)" onclick="doPrint()">${t().printBtn}</button>
+      <div style="font-size:10px;color:var(--sb);text-transform:uppercase;letter-spacing:.7px;margin-bottom:11px;text-align:center">📤 ${tt.shR}</div>
+      <div class="sgrid">
+        <button class="sbtn" style="background:linear-gradient(135deg,#7a3a0a,var(--g));color:#1a0800" onclick="dDl()">${tt.dP}</button>
+        <button class="sbtn" style="background:#128C7E;color:#fff" onclick="dWa()">${tt.wa}</button>
+        <button class="sbtn" style="background:#1a3a6a;color:#fff" onclick="dEm()">${tt.em}</button>
+        <button class="sbtn" style="background:#1a1a1a;color:var(--tx);border:1px solid var(--b)" onclick="dPr()">${tt.pr}</button>
       </div>
     </div>`;
 }
 
-// ── Event Attachment ──
-function attachEvents() {
-  const bookInput = document.getElementById("bookInput");
-  if (bookInput) bookInput.onchange = async e => {
-    for (const f of Array.from(e.target.files)) {
-      if (f.type !== "application/pdf") continue;
-      const b64 = await toB64(f);
-      books.push({ name:f.name, b64, size:(f.size/1024).toFixed(0) });
-    }
-    e.target.value = ""; render();
-  };
-
-  const floorInput = document.getElementById("floorInput");
-  if (floorInput) floorInput.onchange = async e => {
-    const f = e.target.files[0]; if (!f) return;
-    const b64 = await toB64(f);
-    form.floorB64 = b64; form.floorName = f.name; form.floorType = f.type;
-    render();
-  };
-}
-
-function delBook(i) { books.splice(i,1); render(); }
-
-// ── Analyze ──
-async function doAnalyze() {
-  if (!books.length) { form._err = t().noBookWarn; render(); return; }
-  if (!form.clientName || !form.facing) { form._err = t().fillWarn; render(); return; }
-  form._err = ""; loading = true; report = null; render();
-
-  try {
-    const langName = lang==="as"?"Assamese (অসমীয়া)":lang==="hi"?"Hindi (हिंदी)":"English";
-    const system = `You are an expert Vastu Shastra consultant. Use ONLY the provided books. No external knowledge.
-Generate a professional Vastu report in ${langName}.
-Respond ONLY with valid JSON (no markdown):
-{"clientName":"","address":"","date":"","facing":"","overallScore":0-100,"summary":"","sections":[{"title":"","icon":"emoji","score":0-100,"status":"good|warning|bad","shloka":{"sanskrit":"from book","transliteration":"","meaning":"","source":"book,page"},"analysis":"","remedies":[]}],"topRemedies":[],"booksUsed":[]}`;
-
-    const content = [
-      ...books.map(b=>({type:"document",source:{type:"base64",media_type:"application/pdf",data:b.b64},title:b.name})),
-      ...(form.floorB64?[{type:"image",source:{type:"base64",media_type:form.floorType||"image/jpeg",data:form.floorB64}}]:[]),
-      {type:"text",text:`Analyze:\nClient: ${form.clientName}\nAddress: ${form.address||"N/A"}\nFacing: ${form.facing}\nPlot: ${form.plotShape||"N/A"}\nRooms: ${form.rooms||"N/A"}\n${form.floorB64?"Floor plan attached.":""}\nDate: ${new Date().toLocaleDateString(lang==="as"?"as-IN":lang==="hi"?"hi-IN":"en-IN",{year:"numeric",month:"long",day:"numeric"})}`}
-    ];
-
-    const res = await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:4000,system,messages:[{role:"user",content}]})
-    });
-    const data = await res.json();
-    const txt = data.content.map(c=>c.text||"").join("").replace(/```json|```/g,"").trim();
-    report = JSON.parse(txt);
-    loading = false; render(); showTab(2);
-  } catch(e) {
-    form._err = t().errAnalysis; loading = false; render();
-  }
-}
-
-// ── Report HTML Builder ──
-function buildReportHTML() {
-  if (!report) return "";
-  const sc=s=>s>=75?"#27ae60":s>=50?"#e67e22":"#e74c3c";
-  const sb=s=>({good:{bg:"#0e2a0e",c:"#90EE90"},warning:{bg:"#2a1a00",c:"#FFD700"},bad:{bg:"#2a0a0a",c:"#FF6B6B"}}[s]||{bg:"#222",c:"#ccc"});
-  const sl=s=>({good:t().good,warning:t().warn,bad:t().bad}[s]||s);
-  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${t().reportTitle} - ${report.clientName}</title>
+function bHTML(){
+  if(!report)return"";
+  const tt=t();
+  const all=[...(report.plotAnalysis?.doshas||[]).map(d=>({...d,sec:"Plot"})),...(report.buildingAnalysis?.doshas||[]).map(d=>({...d,sec:"Building"})),...(report.mandalaAnalysis?.doshas||[]).map(d=>({...d,sec:"Mandala"})),...(report.environmentAnalysis?.doshas||[]).map(d=>({...d,sec:"Environment"}))];
+  const sv=s=>s==="critical"?tt.cr:s==="moderate"?tt.mo:tt.mi;
+  const sc3=s=>s==="critical"?"#e74c3c":s==="moderate"?"#e67e22":"#27ae60";
+  return`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${tt.rTi} - ${report.clientName}</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali&family=Noto+Serif+Devanagari&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#f9f4ea;font-family:'Noto Serif Bengali','Noto Serif Devanagari','Libre Baskerville',serif;color:#1a0900}.page{max-width:820px;margin:0 auto;background:#fff;box-shadow:0 0 60px #0002}.cover{background:linear-gradient(150deg,#150800,#3a1500,#150800);color:#f5e6c8;padding:64px 56px;text-align:center;position:relative;overflow:hidden}.cover::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(60deg,transparent,transparent 15px,rgba(201,168,76,.04) 15px,rgba(201,168,76,.04) 30px)}.om{font-size:56px;display:block;margin-bottom:12px}.cover h1{font-size:32px;color:#C9A84C;letter-spacing:2px;margin-bottom:6px}.cover-sub{font-size:13px;color:#c4a882;font-style:italic;margin-bottom:44px}.score-wrap{margin:0 auto 20px;width:96px;height:96px;border-radius:50%;background:conic-gradient(#C9A84C ${report.overallScore*3.6}deg,#2a1500 0);display:flex;align-items:center;justify-content:center}.score-inner{width:76px;height:76px;border-radius:50%;background:#150800;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;color:#C9A84C}.score-lbl{font-size:12px;color:#a08050;margin-bottom:32px}.cover-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left;border-top:1px solid #C9A84C44;padding-top:28px}.ci label{font-size:10px;color:#806030;text-transform:uppercase;letter-spacing:1px}.ci .v{font-size:14px;color:#f5e6c8;margin-top:3px}.sec{padding:30px 56px;border-bottom:1px solid #f0e6d0}.sec-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.sec-t{font-size:18px;color:#2a0e00;font-weight:bold}.shloka{background:#fdf6e6;border-left:4px solid #C9A84C;padding:16px 18px;border-radius:0 8px 8px 0;margin:14px 0}.sk-s{font-size:14px;color:#2a0e00;font-style:italic;line-height:1.9;margin-bottom:6px}.sk-tr{font-size:12px;color:#806030;font-style:italic;margin-bottom:5px}.sk-m{font-size:13px;color:#5a3010;margin-bottom:8px}.sk-src{font-size:10px;color:#9b7040;background:#f5e0c0;padding:2px 10px;border-radius:10px;display:inline-block}.ana{font-size:14px;color:#2a1800;line-height:1.95;margin:12px 0}.rem-t{font-size:11px;color:#806030;text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px}.rem-i{display:flex;gap:8px;font-size:13px;color:#2a1800;padding:6px 0;border-bottom:1px dashed #f0e6d0}.rem-i:last-child{border:none}.top{background:linear-gradient(135deg,#150800,#2d1000);color:#f5e6c8;padding:36px 56px}.top h2{color:#C9A84C;margin-bottom:22px;font-size:19px}.top-i{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(201,168,76,.15);font-size:14px}.num{width:28px;height:28px;border-radius:50%;background:#C9A84C;color:#150800;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:12px;flex-shrink:0}.bks{padding:18px 56px;background:#f9f4ea;font-size:12px;color:#6b4a20}.foot{background:#150800;color:#806030;text-align:center;padding:16px;font-size:11px}@media print{body{background:#fff}.page{box-shadow:none}}</style></head><body>
-<div class="page">
-<div class="cover"><span class="om">🕉️</span><h1>${t().reportTitle}</h1><div class="cover-sub">${t().consultTitle}</div>
-<div class="score-wrap"><div class="score-inner">${report.overallScore}</div></div>
-<div class="score-lbl">${t().overallScore}</div>
-<div class="cover-grid">
-<div class="ci"><label>${t().clientLbl}</label><div class="v">${report.clientName}</div></div>
-<div class="ci"><label>${t().dateLbl}</label><div class="v">${report.date}</div></div>
-<div class="ci"><label>${t().addrLbl}</label><div class="v">${report.address||"—"}</div></div>
-<div class="ci"><label>${t().facingLbl}</label><div class="v">${report.facing}</div></div>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{background:#f9f4ea;font-family:'Noto Serif Bengali','Noto Serif Devanagari','Libre Baskerville',serif;color:#1a0900}.pg{max-width:820px;margin:0 auto;background:#fff;box-shadow:0 0 60px #0002}.cv{background:linear-gradient(150deg,#150800,#3a1500,#150800);color:#f5e6c8;padding:56px 48px;text-align:center}.sc{padding:26px 48px;border-bottom:1px solid #f0e6d0}.sh2{font-size:17px;color:#2a0e00;font-weight:bold;margin-bottom:10px}.slk{background:#fdf6e6;border-left:4px solid #C9A84C;padding:13px 15px;border-radius:0 8px 8px 0;margin:11px 0}.dc2{padding:13px;border-radius:8px;margin-bottom:9px;border-left:4px solid}.co2{background:#f0e8ff;border:1px solid #9B59B633;border-radius:6px;padding:9px;margin-top:7px;font-size:12px;color:#5a3090}.tp{background:linear-gradient(135deg,#150800,#2d1000);color:#f5e6c8;padding:30px 48px}.ft{background:#150800;color:#806030;text-align:center;padding:13px;font-size:11px}@media print{body{background:#fff}.pg{box-shadow:none}}</style>
+</head><body><div class="pg">
+<div class="cv">
+<span style="font-size:50px;display:block;margin-bottom:10px">🕉️</span>
+<h1 style="font-size:28px;color:#C9A84C;letter-spacing:2px;margin-bottom:5px">${tt.rTi}</h1>
+<div style="font-size:11px;color:#c4a882;font-style:italic;margin-bottom:36px">${tt.s}</div>
+<div style="display:inline-block;background:conic-gradient(#C9A84C ${report.overallScore*3.6}deg,#2a1500 0);border-radius:50%;padding:3px;margin-bottom:7px">
+<div style="width:76px;height:76px;background:#150800;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:bold;color:#C9A84C">${report.overallScore}</div></div>
+<div style="font-size:11px;color:#a08050;margin-bottom:28px">${tt.oS}</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:13px;text-align:left;border-top:1px solid #C9A84C44;padding-top:22px">
+<div><div style="font-size:9px;color:#806030;text-transform:uppercase;letter-spacing:1px">${tt.cL}</div><div style="font-size:13px;color:#f5e6c8;margin-top:2px">${report.clientName}</div></div>
+<div><div style="font-size:9px;color:#806030;text-transform:uppercase;letter-spacing:1px">${tt.dL}</div><div style="font-size:13px;color:#f5e6c8;margin-top:2px">${report.date}</div></div>
+<div><div style="font-size:9px;color:#806030;text-transform:uppercase;letter-spacing:1px">${tt.aL}</div><div style="font-size:13px;color:#f5e6c8;margin-top:2px">${report.address||"—"}</div></div>
+<div><div style="font-size:9px;color:#806030;text-transform:uppercase;letter-spacing:1px">${tt.fL}</div><div style="font-size:13px;color:#f5e6c8;margin-top:2px">${report.mainEntrance}</div></div>
 </div></div>
-<div class="sec"><div class="sec-t" style="margin-bottom:12px">📋 ${t().summary}</div><div class="ana">${report.summary}</div></div>
-${(report.sections||[]).map(s=>`<div class="sec"><div class="sec-hd"><div class="sec-t">${s.icon} ${s.title}</div><div style="background:${sc(s.score)};color:#fff;padding:3px 14px;border-radius:16px;font-size:12px;font-weight:bold">${s.score}/100</div></div>
-<span style="display:inline-block;padding:3px 12px;border-radius:10px;font-size:11px;font-weight:bold;background:${sb(s.status).bg};color:${sb(s.status).c};margin-bottom:12px">${sl(s.status)}</span>
-${s.shloka?`<div class="shloka"><div class="sk-s">"${s.shloka.sanskrit}"</div>${s.shloka.transliteration?`<div class="sk-tr">${s.shloka.transliteration}</div>`:""}<div class="sk-m">📖 ${s.shloka.meaning}</div><span class="sk-src">📚 ${s.shloka.source}</span></div>`:""}
-<div class="ana">${s.analysis}</div>${s.remedies?.length?`<div class="rem-t">🔧 ${t().remedies}</div>${s.remedies.map(r=>`<div class="rem-i"><span style="color:#C9A84C">◆</span>${r}</div>`).join("")}`:""}</div>`).join("")}
-<div class="top"><h2>⭐ ${t().topRemedies}</h2>${(report.topRemedies||[]).map((r,i)=>`<div class="top-i"><div class="num">${i+1}</div><div>${r}</div></div>`).join("")}</div>
-<div class="bks"><strong>📚 ${t().sources}:</strong> ${(report.booksUsed||books.map(b=>b.name)).join(", ")}</div>
-<div class="foot">🕉️ ${t().title} • ${t().consultTitle}</div>
+<div class="sc"><div class="sh2">📋 Summary</div><div style="font-size:13px;color:#2a1800;line-height:1.9">${report.summary}</div></div>
+${[{ti:"📍 Plot Analysis",d:report.plotAnalysis},{ti:"🏠 Building Analysis",d:report.buildingAnalysis},{ti:"🔯 Mandala Analysis",d:report.mandalaAnalysis},{ti:"💧 Environment",d:report.environmentAnalysis}].filter(s=>s.d).map(s=>`<div class="sc"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="sh2" style="margin:0">${s.ti}</div><div style="background:${sc(s.d.score||0)};color:#fff;padding:3px 11px;border-radius:11px;font-size:12px;font-weight:bold">${s.d.score}/100</div></div>${(s.d.observations||s.d.gridObservations||[]).map(o=>`<div style="font-size:13px;color:#2a1800;padding:5px 0;border-bottom:1px dashed #f0e6d0">• ${o}</div>`).join("")}${s.d.brahmasthanaStatus?`<div style="font-size:13px;color:#856000;margin-top:7px;font-weight:bold">🔯 Brahmasthan: ${s.d.brahmasthanaStatus}</div>`:""}</div>`).join("")}
+<div class="sc"><div class="sh2">🚨 Detected Doshas (${all.length})</div>
+${all.map(d=>`<div class="dc2" style="background:${d.severity==="critical"?"#fff0f0":d.severity==="moderate"?"#fffbf0":"#f0fff4"};border-color:${sc3(d.severity)}">
+<div style="display:flex;justify-content:space-between;margin-bottom:5px"><div><strong style="font-size:14px">${d.name}</strong><div style="font-size:10px;color:#6b4a20">${d.sec}</div></div><span style="background:${sc3(d.severity)};color:#fff;padding:2px 9px;border-radius:9px;font-size:11px">${sv(d.severity)}</span></div>
+<div style="font-size:13px;color:#2a1800;line-height:1.8;margin-bottom:7px">${d.description}</div>
+${d.shloka?.sanskrit?`<div class="slk"><div style="font-size:13px;color:#3a1800;font-style:italic;line-height:1.9;margin-bottom:4px">"${d.shloka.sanskrit}"</div>${d.shloka.transliteration?`<div style="font-size:11px;color:#806030;font-style:italic;margin-bottom:4px">${d.shloka.transliteration}</div>`:""}<div style="font-size:12px;color:#5a3010;margin-bottom:5px">📖 ${d.shloka.meaning}</div><span style="font-size:10px;color:#9b7040;background:#f5e0c0;padding:2px 7px;border-radius:7px">📚 ${d.shloka.source}</span></div>`:""}
+<div style="font-size:11px;color:#806030;text-transform:uppercase;letter-spacing:.7px;margin:7px 0 4px">🔧 ${tt.re}</div>
+<div style="font-size:13px;color:#2a1800;line-height:1.7">${d.remedy}</div>
+${d.conflict?`<div class="co2"><strong>⚖️ ${tt.co}:</strong> ${d.conflict.primaryBook}: ${d.conflict.primaryView}<br><em>${tt.av} (${d.conflict.alternativeBook}): ${d.conflict.alternativeView}</em></div>`:""}
+</div>`).join("")}</div>
+<div class="tp"><div style="font-size:17px;font-weight:bold;color:#C9A84C;margin-bottom:16px">⭐ ${tt.tR}</div>
+${(report.topRemedies||[]).map((r,i)=>`<div style="display:flex;gap:11px;padding:10px 0;border-bottom:1px solid rgba(201,168,76,.15);font-size:13px"><div style="width:24px;height:24px;border-radius:50%;background:#C9A84C;color:#150800;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:12px;flex-shrink:0">${i+1}</div><div>${r}</div></div>`).join("")}
+</div>
+<div style="padding:14px 48px;background:#f9f4ea;font-size:11px;color:#6b4a20"><strong>📚 ${tt.src}:</strong> ${(report.booksUsed||books.filter(b=>b.on).map(b=>b.name)).join(", ")}</div>
+<div class="ft">🕉️ ${tt.n} • ${tt.s}</div>
 </div></body></html>`;
 }
 
-// ── Share Actions ──
-function doDownload() {
-  const blob = new Blob([buildReportHTML()],{type:"text/html;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = `Vastu_${report.clientName.replace(/\s+/g,"_")}.html`;
-  a.click();
+function dDl(){const bl=new Blob([bHTML()],{type:"text/html;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download=`Vastu_${report.clientName.replace(/\s+/g,"_")}.html`;a.click();}
+function dWa(){window.open(`https://wa.me/?text=${encodeURIComponent(t().n+" | "+report.clientName+" | "+t().oS+": "+report.overallScore+"/100")}`,"_blank");}
+function dEm(){const s=encodeURIComponent(`${t().rTi} - ${report.clientName}`);const b=encodeURIComponent(`${t().cL}: ${report.clientName}\n${t().oS}: ${report.overallScore}/100\n\n${report.summary}`);window.open(`mailto:?subject=${s}&body=${b}`,"_blank");}
+function dPr(){const w=window.open("","_blank");w.document.write(bHTML());w.document.close();setTimeout(()=>w.print(),800);}
+
+function AE(){
+  const bi=document.getElementById("bi");
+  if(bi)bi.onchange=async e=>{
+    for(const f of Array.from(e.target.files)){
+      if(f.type!=="application/pdf")continue;
+      const b64v=await b64(f);
+      books.push({name:f.name,b64:b64v,sz:(f.size/1024).toFixed(0),on:true});
+    }
+    e.target.value="";R();
+  };
 }
 
-function doWhatsApp() {
-  const msg = encodeURIComponent(`${t().waMsg} ${report.clientName}`);
-  window.open(`https://wa.me/?text=${msg}`,"_blank");
-}
-
-function doEmail() {
-  const sub = encodeURIComponent(`${t().reportTitle} - ${report.clientName}`);
-  const body = encodeURIComponent(`${t().clientLbl}: ${report.clientName}\n${t().overallScore}: ${report.overallScore}/100\n\n${report.summary}`);
-  window.open(`mailto:?subject=${sub}&body=${body}`,"_blank");
-}
-
-function doPrint() {
-  const w = window.open("","_blank");
-  w.document.write(buildReportHTML()); w.document.close();
-  setTimeout(()=>w.print(),800);
-}
-
-// ── Init ──
-render();
+RT();R();
 </script>
 </body>
 </html>
